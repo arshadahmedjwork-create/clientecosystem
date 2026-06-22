@@ -255,24 +255,63 @@
         /* Header */
         header {
             text-align: center;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            padding: 80px 20px 100px;
+            background: linear-gradient(to bottom, #031637 0%, #031637 70%, #ffffff 100%);
+            margin-top: -60px;
             margin-bottom: 80px;
-            margin-top: 20px;
         }
 
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 4rem;
-            font-weight: 700;
-            color: #000;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
+        .header-logo {
+            max-width: 450px;
+            height: auto;
+            margin: 0 auto 30px auto;
+            display: block;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
         }
 
-        .subtitle {
-            color: #64748b;
-            font-size: 1.2rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
+        .header-writeup {
+            max-width: 1000px;
+            margin: 0 auto 40px auto;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 300;
+            text-align: justify;
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .header-download-btn {
+            background: #fff;
+            color: #041531;
+            padding: 14px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .header-download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            background: #f1f5f9;
+        }
+        
+        .header-download-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
         }
 
         /* Posters Section */
@@ -524,8 +563,18 @@
     <!-- Main Content -->
     <div id="main-content">
         <header>
-            <h1>MAYILON SILVER</h1>
-            <div class="subtitle"></div>
+            <img src="/Mayilon%20silver%20logo.png" alt="MAYILON SILVER Logo" class="header-logo">
+            <div class="header-writeup">
+                Mayilon Silver is a premium silver brand rooted in craftsmanship, purity, and personal meaning. Built for a new generation of buyers, it transforms silver from a traditional purchase into a modern expression of identity. From bespoke silver articles to thoughtful corporate and event gifting, every piece is designed to carry a story. The brand combines high-grade silver, transparent value, and deep customization without compromising elegance. Mayilon Silver celebrates Tamil cultural richness through a contemporary, minimal design language. Its ambition is simple: make meaningful silver accessible, memorable, and made for every milestone.
+            </div>
+            <div class="header-actions">
+                <a href="/Mayilon_Silver_%20%20brandguidelines%20pdf.pdf" class="header-download-btn" download>
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                    </svg>
+                    Download Brand Guidelines
+                </a>
+            </div>
         </header>
 
         <section>
@@ -588,6 +637,15 @@
                         <a href="/MAYILON SILVER - State Document.pdf" class="download-btn" download>Download</a>
                     </div>
                 </div>
+                <!-- MOU Document -->
+                <div class="document-card">
+                    <h3>MOU Document</h3>
+                    <div class="doc-actions">
+                        <button onclick="previewPdf('/Mayilon-Silver-MOU%20(1).pdf')"
+                            class="preview-btn">Preview</button>
+                        <a href="/Mayilon-Silver-MOU (1).pdf" class="download-btn" download>Download</a>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
@@ -630,7 +688,7 @@
         document.addEventListener('dragstart', event => event.preventDefault());
 
         // Password protection logic
-        const CORRECT_PASSWORD = "W&W"; // You can change this password
+        const CORRECT_PASSWORDS = ["W&W", "mylon"];
 
         function handleKeyPress(e) {
             if (e.key === 'Enter') {
@@ -645,7 +703,7 @@
             const mainContent = document.getElementById('main-content');
             const errorDoubt = document.getElementById('error-doubt');
 
-            if (input === CORRECT_PASSWORD) {
+            if (CORRECT_PASSWORDS.includes(input)) {
                 overlay.style.opacity = '0';
                 errorDoubt.classList.remove('show');
                 setTimeout(() => {
@@ -765,7 +823,7 @@
             doubtChar.style.transform = `translateX(${targetX}px)`;
         });
 
-        const igFiles = Array.from({ length: 35 }, (_, i) => `${i + 1}.png`);
+        const igFiles = Array.from({ length: 35 }, (_, i) => `${i + 1}.png`).filter(f => f !== '1.png');
         const IG_INITIAL_COUNT = 6;
 
         function renderIgGallery() {

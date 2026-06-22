@@ -256,29 +256,37 @@
         header {
             text-align: center;
             width: 100vw;
-            margin-left: calc(-50vw + 50%);
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
             padding: 80px 20px 100px;
             background: linear-gradient(to bottom, #031637 0%, #031637 70%, #ffffff 100%);
             margin-top: -60px;
             margin-bottom: 80px;
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
         .header-logo {
             max-width: 450px;
+            width: 100%;
             height: auto;
             margin: 0 auto 30px auto;
             display: block;
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+            padding: 0 20px;
         }
 
         .header-writeup {
             max-width: 1000px;
             margin: 0 auto 40px auto;
+            padding: 0 20px;
             font-size: 1.15rem;
             line-height: 1.8;
             color: rgba(255, 255, 255, 0.85);
             font-weight: 300;
             text-align: justify;
+            box-sizing: border-box;
         }
 
         .header-actions {
@@ -823,7 +831,7 @@
             doubtChar.style.transform = `translateX(${targetX}px)`;
         });
 
-        const igFiles = Array.from({ length: 35 }, (_, i) => `${i + 1}.png`).filter(f => f !== '1.png');
+        const igFiles = Array.from({ length: 35 }, (_, i) => `${i + 1}.png`).filter(f => !['1.png', '3.png', '4.png', '5.png'].includes(f));
         const IG_INITIAL_COUNT = 6;
 
         function renderIgGallery() {

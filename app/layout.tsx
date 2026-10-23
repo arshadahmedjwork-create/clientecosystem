@@ -19,17 +19,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-white text-black`}>
+    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+      <body className={`font-sans antialiased bg-white text-black`}>
         {/* Global Logo */}
         <div className="fixed top-6 left-6 md:top-12 md:left-12 z-50 pointer-events-auto w-12 h-12 md:w-16 md:h-16 mix-blend-difference text-white">
           {/* Assuming logo is black, invert to white for difference blending to work (White - White = Black, White - Black = White) */}
           <img src="/logo/logo.png" alt="W&W Logo" className="w-full h-full object-contain invert" />
-        </div>
-
-        {/* Global Support Character */}
-        <div className="fixed bottom-6 right-6 md:bottom-12 md:right-12 z-40 pointer-events-none w-16 md:w-24 opacity-80 mix-blend-difference text-white">
-          <img src="/logo/support.png" alt="Support" className="w-full h-auto object-contain invert drop-shadow-2xl" />
         </div>
 
         {children}

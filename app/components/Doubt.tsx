@@ -35,7 +35,7 @@ export default function Doubt() {
     const [particles, setParticles] = useState<Particle[]>([]);
     const [trickKey, setTrickKey] = useState(0);
     const rootRef = useRef<HTMLDivElement>(null);
-    const eyesRef = useRef<SVGGElement>(null);
+    const markRef = useRef<SVGGElement>(null);
     const trickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const lineTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -134,21 +134,21 @@ export default function Doubt() {
         return () => window.removeEventListener(DOUBT_EVENT, onReact);
     }, [perform, say, burst, resetIdle]);
 
-    // Wake up on any activity; eyes follow the cursor.
+    // Wake up on any activity; the question mark leans toward the cursor.
     useEffect(() => {
         let frame = 0;
         const onMove = (e: PointerEvent) => {
             cancelAnimationFrame(frame);
             frame = requestAnimationFrame(() => {
                 const el = rootRef.current;
-                const eyes = eyesRef.current;
-                if (!el || !eyes) return;
+                const mark = markRef.current;
+                if (!el || !mark) return;
                 const box = el.getBoundingClientRect();
                 const dx = e.clientX - (box.left + box.width / 2);
-                const dy = e.clientY - (box.top + box.height * 0.35);
+                const dy = e.clientY - (box.top + box.height * 0.15);
                 const d = Math.hypot(dx, dy) || 1;
-                const m = Math.min(3, d / 60);
-                eyes.style.transform = `translate(${(dx / d) * m}px, ${(dy / d) * m}px)`;
+                const lean = Math.max(-18, Math.min(18, (dx / d) * Math.min(18, d / 20)));
+                mark.style.transform = `rotate(${lean}deg)`;
             });
         };
         const onActivity = () => {
@@ -195,56 +195,65 @@ export default function Doubt() {
 
             <button type="button" onClick={onPoke} className="doubt-hit" aria-label="Doubt, the W&W mascot">
                 <div key={trickKey} className={`doubt ${trick ? `doubt--${trick}` : ''}`}>
-                    <svg viewBox="0 0 120 170" className="doubt-svg" fill="none" stroke="#000" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
-                        {/* thought mark */}
-                        <g className="doubt-mark">
-                            <text x="60" y="26" textAnchor="middle" fontSize="28" fontFamily="Inter, system-ui, sans-serif" fontWeight="500" fill="#000" stroke="none">{symbol}</text>
+                    <svg viewBox="420 150 1100 1560" className="doubt-svg" fill="none" stroke="#000" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round">
+                        {/* the question mark is Doubt's head */}
+                        <g ref={markRef} className="doubt-mark-follow">
+                            <g className="doubt-mark">
+                                {symbol === '?' ? (
+                                    <>
+                                        <path d="M882 272 Q886 201 966 201 Q1050 201 1050 274 Q1050 349 966 349 H944 V398" strokeWidth="34" strokeLinecap="butt" strokeLinejoin="miter" />
+                                        <circle cx="943" cy="467" r="25" fill="#000" stroke="none" />
+                                    </>
+                                ) : (
+                                    <text x="966" y="490" textAnchor="middle" fontSize="340" fontFamily="Inter, system-ui, sans-serif" fontWeight="500" fill="#000" stroke="none">{symbol}</text>
+                                )}
+                            </g>
                         </g>
 
                         {/* listening rings */}
                         <g className="doubt-rings">
-                            <path d="M86 46 a14 14 0 0 1 0 20" />
-                            <path d="M92 40 a22 22 0 0 1 0 32" />
+                            <path d="M1150 260 a110 110 0 0 1 0 170" />
+                            <path d="M1210 200 a190 190 0 0 1 0 290" />
                         </g>
 
                         <g className="doubt-body">
-                            {/* legs */}
-                            <g className="doubt-legs">
-                                <path className="doubt-leg-l" d="M50 140 L50 158 L44 160" />
-                                <path className="doubt-leg-r" d="M70 140 L70 158 L76 160" />
+                            {/* torso, revealed when the sleeves move */}
+                            <path d="M696 1370 V860 C696 700 760 590 850 590 H1085 C1175 590 1236 700 1236 860 V1370 Z" fill="#fff" />
+
+                            {/* sleeves */}
+                            <g className="doubt-arm-l">
+                                <Sleeve />
+                            </g>
+                            <g className="doubt-arm-r">
+                                <Sleeve side="right" />
                             </g>
 
                             {/* shorts */}
-                            <path d="M36 120 H84 V142 H63 L60 132 L57 142 H36 Z" fill="#000" />
-
-                            {/* torso / sweater */}
-                            <path d="M38 76 Q60 68 82 76 Q92 80 92 92 V122 H28 V92 Q28 80 38 76 Z" fill="#fff" />
-                            <path d="M44 92 V120 M76 92 V120" />
-
-                            {/* arms */}
-                            <g className="doubt-arm-l">
-                                <path d="M32 82 Q20 86 20 100 V126 Q20 132 26 132 Q32 132 32 126 V96" fill="#fff" />
-                            </g>
-                            <g className="doubt-arm-r">
-                                <path d="M88 82 Q100 86 100 100 V126 Q100 132 94 132 Q88 132 88 126 V96" fill="#fff" />
-                            </g>
-
-                            {/* head */}
-                            <g className="doubt-head">
-                                <circle cx="60" cy="54" r="19" fill="#fff" />
-                                <g ref={eyesRef} className="doubt-eyes">
-                                    <g className="doubt-blink">
-                                        <ellipse cx="53" cy="54" rx="2.2" ry="2.8" fill="#000" stroke="none" />
-                                        <ellipse cx="67" cy="54" rx="2.2" ry="2.8" fill="#000" stroke="none" />
-                                    </g>
-                                </g>
-                                <path className="doubt-mouth" d="M55 63 Q60 66 65 63" strokeWidth="2" />
-                            </g>
+                            <path d="M687 1366 H1245 V1597 L1414 1673 H518 L687 1597 Z" fill="#000" stroke="none" />
+                            <path d="M966 1580 V1680" stroke="#fff" strokeWidth="13" />
                         </g>
                     </svg>
                 </div>
                 <div className="doubt-shadow" />
             </button>
         </div>
+    );
+}
+
+// One sleeve per side; its fill hides the torso outline so at rest
+// Doubt matches the original art, and the torso shows when an arm moves.
+const SLEEVES = {
+    left: ['M850 590 C700 590 560 690 500 880 C460 1030 455 1250 470 1370 C478 1460 540 1520 625 1520 C650 1520 670 1515 696 1508 V862 C700 720 770 600 880 592 Z', 'M850 590 C700 590 560 690 500 880 C460 1030 455 1250 470 1370 C478 1460 540 1520 625 1520 C650 1520 670 1515 690 1508', 'M470 1366 H696 M696 862 V1508'],
+    right: ['M 1082 590 C 1232 590 1372 690 1432 880 C 1472 1030 1477 1250 1462 1370 C 1454 1460 1392 1520 1307 1520 C 1282 1520 1262 1515 1236 1508 V 862 C 1232 720 1162 600 1052 592 Z', 'M 1082 590 C 1232 590 1372 690 1432 880 C 1472 1030 1477 1250 1462 1370 C 1454 1460 1392 1520 1307 1520 C 1282 1520 1262 1515 1242 1508', 'M 1462 1366 H 1236 M 1236 862 V 1508'],
+};
+
+function Sleeve({ side = 'left' }: { side?: 'left' | 'right' }) {
+    const [fill, outline, lines] = SLEEVES[side];
+    return (
+        <>
+            <path d={fill} fill="#fff" stroke="none" />
+            <path d={outline} />
+            <path d={lines} />
+        </>
     );
 }

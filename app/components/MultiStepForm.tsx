@@ -12,6 +12,7 @@ import Section7 from './sections/Section7';
 import Section8 from './sections/Section8';
 import Doubt from './Doubt';
 import Backdrop from './Backdrop';
+import FilmReel from './FilmReel';
 import { doubtReact } from '@/app/lib/doubt';
 
 const TOTAL_STEPS = 8;
@@ -179,7 +180,7 @@ export default function MultiStepForm() {
 
     if (!started) {
         return (
-            <div className="min-h-screen relative overflow-hidden bg-white text-black flex items-center justify-center p-6">
+            <div className="min-h-screen relative overflow-hidden bg-white text-black flex flex-col items-center p-6 pt-32 md:pt-40 pb-40">
                 <Backdrop step={0} />
                 <div className="relative z-10 max-w-4xl text-center">
                     <p className="reveal-up text-xs font-bold uppercase tracking-[0.4em] opacity-60 mb-8" style={{ animationDelay: '100ms' }}>
@@ -212,6 +213,9 @@ export default function MultiStepForm() {
                         <span>Let’s begin</span>
                         <span className="btn-arrow">→</span>
                     </button>
+                </div>
+                <div className="relative z-10 w-full max-w-5xl mt-20 md:mt-28">
+                    <FilmReel />
                 </div>
                 <Doubt />
             </div>
